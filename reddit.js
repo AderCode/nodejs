@@ -1,18 +1,14 @@
 const path = require("path");
 const fs = require("fs");
-const request = require('request-promise');
+const rp = require('request-promise');
 const dataPath = path.join(__dirname, "popular-articles.json");
 
 let array = [];
 
 
-request('https://reddit.com/r/popular.json', (err, res, body) => {
-    if(err) console.log('Request Error: ', err);
+rp({uri: 'https://reddit.com/r/popular.json', json: true }).then((body) => {
 
-    let jsonData = JSON.parse(body)
-    // console.log(jsonData.data)
-
-    JSON.parse(body).data.children.forEach(item => {
+    body.data.children.forEach(item => {
         array.push({
             Title: item.data.title,
             URL: item.data.url,
@@ -26,4 +22,6 @@ request('https://reddit.com/r/popular.json', (err, res, body) => {
 
     })
 
+}).catch((err) => {
+    console.log('errCatcher: ', err)
 })
