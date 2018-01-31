@@ -21,13 +21,18 @@ rp({uri: "https://reddit.com/r/popular.json", json: true})
         encoding: null
       };
 
-      let fileExt = url.parse(srcUrl).pathname.split('.').pop();
+      // Personal Way (requires manual '.' before interpolation) //
+      // let ext = url.parse(srcUrl).pathname.split('.').pop();
+
+      // Built-In Way... (does NOT require manual '.' before interpolation) //
+      let ext = path.extname(srcUrl);
+
 
       
       rp.get(options)
         .then(function (res) {
           const buffer = Buffer.from(res, 'utf8');
-          fs.writeFileSync(`./downloads/${item.data.id}.${fileExt}`, buffer);
+          fs.writeFileSync(`./downloads/${item.data.id}${ext}`, buffer);
         });
       }
       // //
